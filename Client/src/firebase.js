@@ -1,4 +1,6 @@
-import * as firebase from "firebase";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import { initializeApp } from "firebase/app";
 const firebaseConfig = {
   apiKey: "AIzaSyA3GZuQ-0J8jBAKxaCyM8ebMrpm4P5E4Bs",
   authDomain: "ecommerce-fc6ab.firebaseapp.com",
