@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import RegisterComplete from "./Pages/auth/Registercomplete";
 import Login from "./Pages/auth/Login";
 import Register from "./Pages/auth/Register";
-import RegisterComplete from "./Pages/auth/RegisterComplete";
+
 import Home from "./Pages/Home";
 import Header from "./Components/nav/Header";
 const App = () => {
