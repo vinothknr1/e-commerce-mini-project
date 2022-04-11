@@ -2,14 +2,42 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../../firebase";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-const RegisterComplete = ({ history }) => {
+import { useNavigate } from "react-router-dom";
+const RegisterComplete = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  useState(() => {
+  let history = useNavigate();
+  useEffect(() => {
     setEmail(window.localStorage.getItem("emailForRegistration"));
   }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      toast.error("Email and Password is required");
+      return;
+    }
+    if (password.length < 6) {
+      toast.error("password must be atleast 6 characters long");
+      return;
+    }
+    try {
+      const result = await auth.signInWithEmailLink(
+        email,
+        window.location.href
+      );
+      // console.log("RESULT",result);
+      if (result.user.emailVerified) {
+        window.localStorage.removeItem("emailForRegistration");
+        let user = auth.currentUser;
+        await user.updatePassword(password);
+        const idTokenResult = await user.getIdTokenResult();
+        console.log("user", user, "idTokenResult", idTokenResult);
+        history("/");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
   const completeRegistrationForm = () => (
     <form onSubmit={handleSubmit}>
