@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import RegisterComplete from "./Pages/auth/Registercomplete";
-
+import ForgotPassword from "./Pages/auth/ForgotPassword";
 import Login from "./Pages/auth/Login";
 import Register from "./Pages/auth/Register";
 import Home from "./Pages/Home";
@@ -37,6 +37,7 @@ const App = () => {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/register/complete" element={<RegisterComplete />} />
+        <Route exact path="/forgot/password" element={<ForgotPassword />} />
       </Routes>
     </>
   );
