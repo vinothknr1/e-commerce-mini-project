@@ -7,6 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+const create0rUpdateUser = async (authtoken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/create-or-update-user`,
+
+    {},
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,14 +39,17 @@ const Login = () => {
       //console.log(result);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
-      dispatch({
-        type: "LOGGED IN USER",
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
-      history("/");
+      create0rUpdateUser(idTokenResult.token)
+        .then((res) => console.log("CREATE OR UPDATE RES", res))
+        .catch();
+      // dispatch({
+      //   type: "LOGGED IN USER",
+      //   payload: {
+      //     email: user.email,
+      //     token: idTokenResult.token,
+      //   },
+      // });
+      // history("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
