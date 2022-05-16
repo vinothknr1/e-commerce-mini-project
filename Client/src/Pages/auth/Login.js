@@ -5,13 +5,11 @@ import { Button } from "antd";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-const create0rUpdateUser = async (authtoken) => {
+
+const createOrUpdateUser = async (authtoken) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/create-or-update-user`,
-
     {},
     {
       headers: {
@@ -20,43 +18,50 @@ const create0rUpdateUser = async (authtoken) => {
     }
   );
 };
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   let history = useNavigate();
-  let dispatch = useDispatch();
   const { user } = useSelector((state) => ({ ...state }));
+
   useEffect(() => {
     if (user && user.token) history("/");
   }, [user]);
+
+  let dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    //console.table(email,password);
+    // console.table(email, password);
     try {
       const result = await auth.signInWithEmailAndPassword(email, password);
-      //console.log(result);
+      // console.log(result);
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
-      create0rUpdateUser(idTokenResult.token)
+
+      createOrUpdateUser(idTokenResult.token)
         .then((res) => console.log("CREATE OR UPDATE RES", res))
         .catch();
+
       // dispatch({
-      //   type: "LOGGED IN USER",
+      //   type: "LOGGED_IN_USER",
       //   payload: {
       //     email: user.email,
       //     token: idTokenResult.token,
       //   },
       // });
-      // history("/");
+      // history.push("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
       setLoading(false);
     }
   };
-  const googleLogin = (async) => {
+
+  const googleLogin = async () => {
     auth
       .signInWithPopup(googleAuthProvider)
       .then(async (result) => {
@@ -76,6 +81,7 @@ const Login = () => {
         toast.error(err.message);
       });
   };
+
   const loginForm = () => (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -84,10 +90,11 @@ const Login = () => {
           className="form-control"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your e-mail"
+          placeholder="Your email"
           autoFocus
         />
       </div>
+
       <div className="form-group">
         <input
           type="password"
@@ -97,8 +104,8 @@ const Login = () => {
           placeholder="Your password"
         />
       </div>
-      <br />
 
+      <br />
       <Button
         onClick={handleSubmit}
         type="primary"
@@ -109,7 +116,7 @@ const Login = () => {
         size="large"
         disabled={!email || password.length < 6}
       >
-        Login with E-mail/Password
+        Login with Email/Password
       </Button>
     </form>
   );
@@ -124,6 +131,7 @@ const Login = () => {
             <h4>Login</h4>
           )}
           {loginForm()}
+
           <Button
             onClick={googleLogin}
             type="danger"
@@ -135,7 +143,8 @@ const Login = () => {
           >
             Login with Google
           </Button>
-          <Link to="/forgot/password" className="float-end text-danger">
+
+          <Link to="/forgot/password" className="float-right text-danger">
             Forgot Password
           </Link>
         </div>
@@ -143,4 +152,5 @@ const Login = () => {
     </div>
   );
 };
+
 export default Login;
