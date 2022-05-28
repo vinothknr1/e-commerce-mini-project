@@ -1,7 +1,7 @@
-const mangoose = require("mangoose");
-const { ObjectId } = mangoose.Schema;
+const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 
-const userSchema = new mangoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     name: String,
     email: {
@@ -22,4 +22,4 @@ const userSchema = new mangoose.Schema(
   },
   { timestamps: true }
 );
-module.exports = mangoose.module("User", userSchema);
+module.exports = mongoose.model("User", userSchema);
