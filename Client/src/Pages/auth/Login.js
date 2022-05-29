@@ -43,7 +43,7 @@ const Login = () => {
             },
           });
         })
-        .catch();
+        .catch( (err) => console.log(err));
 
       history("/");
     } catch (error) {
@@ -71,8 +71,8 @@ const Login = () => {
                 _id: res.data._id,
               },
             });
-          })
-          .catch();
+          }) 
+          .catch( (err) => console.log(err));
         history("/");
       })
       .catch((err) => {
